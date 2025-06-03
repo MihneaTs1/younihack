@@ -3,7 +3,7 @@
 body {
   margin: 0;
   font-family: 'Montserrat', 'Segoe UI', 'Roboto', 'Arial', sans-serif;
-  background: #181a20;
+  background: #101114;
 }
 
 .App {
@@ -41,8 +41,8 @@ body {
   font-weight: 800;
   margin-left: 2rem;
   letter-spacing: 2px;
-  color: #00b894;
-  text-shadow: 0 2px 12px #00b89444;
+  color: #009900;
+  text-shadow: 0 2px 12px #00990044;
 }
 .TopBar-nav {
   margin-right: 2rem;
@@ -69,13 +69,13 @@ body {
   bottom: 0;
   width: 0;
   height: 3px;
-  background: #00b894;
+  background: #009900;
   transition: width 0.3s, left 0.3s;
 }
 .TopBar-nav a:hover {
   background: #23243a;
-  color: #00b894;
-  box-shadow: 0 2px 8px #00b89433;
+  color: #009900;
+  box-shadow: 0 2px 8px #00990033;
 }
 .TopBar-nav a:hover::after {
   width: 100%;
@@ -83,7 +83,7 @@ body {
 }
 
 .App-header {
-  background: linear-gradient(135deg, #23243a 60%, #00b894 100%);
+  background: linear-gradient(135deg, #181922 60%, #006600 100%);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -100,11 +100,11 @@ h1 {
   font-size: 3rem;
   margin-bottom: 1rem;
   letter-spacing: 1px;
-  text-shadow: 0 4px 24px #00b89433;
+  text-shadow: 0 4px 24px #00990033;
 }
 
 section {
-  background: rgba(34, 36, 58, 0.85);
+  background: rgba(16, 17, 20, 0.92);
   border-radius: 16px;
   box-shadow: 0 4px 24px rgba(0,0,0,0.12);
   padding: 2rem 2.5rem;
@@ -120,7 +120,7 @@ section#register {
 }
 
 section h2 {
-  color: #00b894;
+  color: #009900;
   margin-bottom: 1rem;
   font-family: 'Orbitron', 'Montserrat', sans-serif;
 }
@@ -131,7 +131,7 @@ ul {
 }
 
 .App-link {
-  background: linear-gradient(90deg, #00b894 60%, #23243a 100%);
+  background: linear-gradient(90deg, #009900 60%, #23243a 100%);
   color: #fff;
   padding: 1rem 2.5rem;
   border-radius: 8px;
@@ -148,20 +148,20 @@ ul {
   cursor: pointer;
 }
 .App-link:hover {
-  background: linear-gradient(90deg, #009e74 60%, #23243a 100%);
+  background: linear-gradient(90deg, #007700 60%, #23243a 100%);
   color: #e0ffe6;
-  box-shadow: 0 4px 16px #00b89444;
+  box-shadow: 0 4px 16px #00990044;
   transform: translateY(-2px) scale(1.03);
 }
 .App-link-green {
-  background: #00b894 !important;
+  background: #009900 !important;
   color: #fff !important;
   transition: background 0.2s, color 0.2s, box-shadow 0.2s, transform 0.2s;
 }
 .App-link-green:hover {
-  background: #009e74 !important;
+  background: #007700 !important;
   color: #e0ffe6 !important;
-  box-shadow: 0 4px 16px #00b89444;
+  box-shadow: 0 4px 16px #00990044;
   transform: translateY(-2px) scale(1.03);
 }
 
@@ -170,10 +170,10 @@ ul {
   flex-direction: column;
   gap: 1.2rem;
   margin-top: 1.2rem;
-  background: rgba(24, 26, 32, 0.95);
+  background: rgba(16, 17, 20, 0.97);
   border-radius: 12px;
   padding: 2rem 1.5rem;
-  box-shadow: 0 2px 12px #00b89422;
+  box-shadow: 0 2px 12px #00990022;
   max-width: 100%;
   width: 700px;
   margin-left: auto;
@@ -188,7 +188,7 @@ ul {
   font-family: 'Montserrat', sans-serif;
   font-weight: 600;
   margin-bottom: 0.4rem;
-  color: #00b894;
+  color: #009900;
   letter-spacing: 0.5px;
 }
 .form-group input {
@@ -205,8 +205,8 @@ ul {
   box-sizing: border-box;
 }
 .form-group input:focus {
-  border: 1.5px solid #00b894;
-  box-shadow: 0 0 0 2px #00b89433;
+  border: 1.5px solid #009900;
+  box-shadow: 0 0 0 2px #00990033;
 }
 
 .register-form button[type="submit"] {
