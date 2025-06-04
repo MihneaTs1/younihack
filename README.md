@@ -1,6 +1,6 @@
-# CyberHack 2025 Registration App
+# YouniHack 2025 Registration App
 
-This project is a full-stack registration system for the CyberHack 2025 event. It features a React frontend and a Node.js/Express backend that stores registrations in CSV files and handles email confirmation.
+This project is a full-stack registration system for the YouniHack 2025 event. It features a React frontend and a Node.js/Express backend that stores registrations in CSV files and handles email confirmation.
 
 ## Features
 

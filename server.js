@@ -14,19 +14,47 @@ app.use(cors());
 app.use(express.json());
 
 const csvPath = path.join(__dirname, 'registrations.csv');
+
+// --- Ensure CSVs Exist with Headers ---
+function ensureCsvWithHeaders(filePath, headers) {
+  const expectedHeaderLine = headers.map(h => h.title).join(',');
+  if (!fs.existsSync(filePath)) {
+    fs.writeFileSync(filePath, expectedHeaderLine + '\n');
+  } else {
+    const fileContent = fs.readFileSync(filePath, 'utf8');
+    const lines = fileContent.split(/\r?\n/);
+    if (lines[0] !== expectedHeaderLine) {
+      // Replace header, keep data rows (skip old header)
+      const newContent = [expectedHeaderLine, ...lines.slice(1)].join('\n');
+      fs.writeFileSync(filePath, newContent);
+    }
+  }
+}
+
+const csvHeaders = [
+  {id: 'id', title: 'ID'},
+  {id: 'name', title: 'First Name'},
+  {id: 'surname', title: 'Last Name'},
+  {id: 'email', title: 'Email'},
+  {id: 'prefix', title: 'Prefix'},
+  {id: 'phone', title: 'Phone'},
+  {id: 'country', title: 'Country'},
+  {id: 'city', title: 'City'}
+];
+
+ensureCsvWithHeaders(csvPath, csvHeaders);
+const confirmedCsvPath = path.join(__dirname, 'registrations-confirmed.csv');
+ensureCsvWithHeaders(confirmedCsvPath, csvHeaders);
+
 const csvWriter = createObjectCsvWriter({
   path: csvPath,
-  header: [
-    {id: 'id', title: 'ID'},
-    {id: 'name', title: 'First Name'},
-    {id: 'surname', title: 'Last Name'},
-    {id: 'email', title: 'Email'},
-    {id: 'prefix', title: 'Prefix'},
-    {id: 'phone', title: 'Phone'},
-    {id: 'country', title: 'Country'},
-    {id: 'city', title: 'City'}
-  ],
-  append: fs.existsSync(csvPath)
+  header: csvHeaders,
+  append: true
+});
+const confirmedCsvWriter = createObjectCsvWriter({
+  path: confirmedCsvPath,
+  header: csvHeaders,
+  append: true
 });
 
 // Configure your email transport (use your real credentials)
@@ -38,30 +66,17 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-const confirmedCsvPath = path.join(__dirname, 'registrations-confirmed.csv');
-const confirmedCsvWriter = createObjectCsvWriter({
-  path: confirmedCsvPath,
-  header: [
-    {id: 'id', title: 'ID'},
-    {id: 'name', title: 'First Name'},
-    {id: 'surname', title: 'Last Name'},
-    {id: 'email', title: 'Email'},
-    {id: 'prefix', title: 'Prefix'},
-    {id: 'phone', title: 'Phone'},
-    {id: 'country', title: 'Country'},
-    {id: 'city', title: 'City'}
-  ],
-  append: fs.existsSync(confirmedCsvPath)
-});
-
 function readCsvEmails(csvPath) {
   if (!fs.existsSync(csvPath)) return [];
   const data = fs.readFileSync(csvPath, 'utf8');
   return data.split('\n').slice(1).map(line => line.split(',')[3]).filter(Boolean);
 }
 
-const FRONTEND_ADDRESS = process.env.FRONTEND_ADDRESS || 'http://localhost:3000';
-const BACKEND_ADDRESS = process.env.BACKEND_ADDRESS || 'http://localhost:5000';
+app.get('/stats', (req, res) => {
+  const regCount = fs.existsSync(csvPath) ? fs.readFileSync(csvPath, 'utf8').split('\n').filter(Boolean).length - 1 : 0;
+  const confCount = fs.existsSync(confirmedCsvPath) ? fs.readFileSync(confirmedCsvPath, 'utf8').split('\n').filter(Boolean).length - 1 : 0;
+  res.json({ registered: regCount, confirmed: confCount });
+});
 
 app.get('/confirm', async (req, res) => {
   const { id } = req.query;
@@ -79,13 +94,10 @@ app.get('/confirm', async (req, res) => {
   }
   if (!alreadyConfirmed) {
     // Only append if not already confirmed
-    // Only write the header if the file is empty
     const isEmpty = !fs.existsSync(confirmedCsvPath) || fs.readFileSync(confirmedCsvPath, 'utf8').trim() === '';
-    // Only append the entry (not header) if the file is not empty and already has the header
     if (isEmpty) {
       fs.appendFileSync(confirmedCsvPath, header + '\n' + entry + '\n');
     } else {
-      // Check if the entry is already present (shouldn't be, but double check)
       const confirmedLines = fs.readFileSync(confirmedCsvPath, 'utf8').split('\n');
       if (!confirmedLines.some(line => line.startsWith(id + ','))) {
         fs.appendFileSync(confirmedCsvPath, entry + '\n');
@@ -96,12 +108,13 @@ app.get('/confirm', async (req, res) => {
 });
 
 function renderConfirmPage(message, success) {
+  const frontendUrl = process.env.FRONTEND_ADDRESS || 'http://localhost:3000';
   return `<!DOCTYPE html>
   <html lang="en">
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CyberHack 2025 Registration Confirmation</title>
+    <title>YouniHack 2025 Registration Confirmation</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <style>
       body {
@@ -172,11 +185,11 @@ function renderConfirmPage(message, success) {
     </style>
   </head>
   <body>
-    <a href="${FRONTEND_ADDRESS}/" class="TopBar-logo">CyberHack 2025</a>
+    <a href="${frontendUrl}/" class="TopBar-logo">YouniHack 2025</a>
     <div class="confirm-container">
       <div class="confirm-title">Registration Confirmation</div>
       <div class="confirm-message">${message}</div>
-      <a href="${FRONTEND_ADDRESS}/" class="App-link">Back to Home</a>
+      <a href="${frontendUrl}/" class="App-link">Back to Home</a>
     </div>
   </body>
   </html>`;
@@ -202,17 +215,15 @@ app.post('/register', async (req, res) => {
       { id, name, surname, email, prefix, phone, country, city }
     ]);
     // Send confirmation email
-    const confirmUrl = `${BACKEND_ADDRESS}/confirm?id=${id}`;
-    try {
-      await transporter.sendMail({
-        from: process.env.MAIL_USER,
-        to: email,
-        subject: 'Confirm your registration for CyberHack 2025',
-        text: `Hi ${name},\n\nThank you for registering for CyberHack 2025! Please confirm your registration by clicking the link below:\n${confirmUrl}\n\nIf you did not register, please ignore this email.\n\nBest,\nCyberHack Team`
-      });
-    } catch (mailErr) {
-      return res.status(200).json({ success: true, warning: 'Registration saved, but confirmation email failed.' });
-    }
+    const confirmUrl = `${process.env.BACKEND_ADDRESS || 'http://localhost:5000'}/confirm?id=${id}`;
+    const regMailOptions = {
+      from: process.env.MAIL_USER,
+      to: email,
+      subject: 'Confirm your registration for YouniHack 2025',
+      text: `Hi ${name},\n\nThank you for registering for YouniHack 2025! Please confirm your registration by clicking the link below:\n${confirmUrl}\n\nIf you did not register, please ignore this email.\n\nBest,\nCyberHack Team`,
+      html: `<p>Hi ${name},</p><p>Thank you for registering for YouniHack 2025! Please confirm your registration by clicking the link below:</p><p><a href=\"${confirmUrl}\">${confirmUrl}</a></p><p>If you did not register, please ignore this email.</p><p>Best,<br/>CyberHack Team</p>`
+    };
+    await transporter.sendMail(regMailOptions);
     res.status(200).json({ success: true });
   } catch (err) {
     res.status(500).json({ error: 'Server error', details: err.message });

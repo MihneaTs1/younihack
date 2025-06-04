@@ -1,6 +1,5 @@
 {
   "name": "hackaton",
-  "homepage": "https://mihneats1.github.io/cyberhack",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

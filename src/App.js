@@ -1,6 +1,11 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import RegistrationStats from './RegistrationStats';
+import FormField from './FormField';
+import LoadingSpinner from './LoadingSpinner';
+import TopBar from './TopBar';
+import Section from './Section';
 
 function scrollToSection(e, id) {
   e.preventDefault();
@@ -11,7 +16,6 @@ function scrollToSection(e, id) {
 }
 
 function App() {
-  const [submitted, setSubmitted] = React.useState(false);
   const [form, setForm] = React.useState({
     name: '',
     surname: '',
@@ -23,6 +27,28 @@ function App() {
   });
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState('');
+  const [submitted, setSubmitted] = React.useState(false);
+
+  // --- Validation ---
+  const validateForm = () => {
+    if (!form.name.trim() || !form.surname.trim() || !form.email.trim() || !form.prefix.trim() || !form.phone.trim() || !form.country.trim() || !form.city.trim()) {
+      setError('All fields are required.');
+      return false;
+    }
+    if (!/^\S+@\S+\.\S+$/.test(form.email)) {
+      setError('Please enter a valid email address.');
+      return false;
+    }
+    if (!/^\+[0-9]{1,4}$/.test(form.prefix)) {
+      setError('Phone prefix must be in the format +XX or +XXX or +XXXX.');
+      return false;
+    }
+    if (!/^\([0-9]{3}\) [0-9]{3}-[0-9]{3,4}$/.test(form.phone)) {
+      setError('Phone number must be in the format (123) 456-7890 or (123) 456-789.');
+      return false;
+    }
+    return true;
+  };
 
   const handleChange = e => {
     const { name, value } = e.target;
@@ -31,8 +57,9 @@ function App() {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    setLoading(true);
     setError('');
+    if (!validateForm()) return;
+    setLoading(true);
     try {
       const res = await fetch((process.env.REACT_APP_BACKEND_ADDRESS || 'http://localhost:5000') + '/register', {
         method: 'POST',
@@ -56,54 +83,34 @@ function App() {
 
   return (
     <div className="App">
-      <div className="TopBar">
-        <a href="/" className="TopBar-logo" style={{textDecoration: 'none'}}>
-          CyberHack 2025
-        </a>
-        <nav className="TopBar-nav">
-          <a href="#event" onClick={e => scrollToSection(e, 'event')}>Event</a>
-          <a href="#why" onClick={e => scrollToSection(e, 'why')}>Why Participate</a>
-          <a href="#register" onClick={e => scrollToSection(e, 'register')}>Register</a>
-        </nav>
-      </div>
+      <TopBar />
       <header className="App-header">
-        <h1>Cybersecurity Hackathon 2025</h1>
+        <h1>YouniHack 2025</h1>
         <p>
           Join us for an exciting weekend of innovation, learning, and competition in the world of cybersecurity!
         </p>
-        <section id="event">
-          <h2>Event Details</h2>
+        <Section id="event" title="Event Details">
           <ul>
             <li><strong>Date:</strong> September 6-7, 2025</li>
             <li><strong>Location:</strong> Universitatea Politehnica Bucuresti, Bucuresti, Romania</li>
             <li><strong>Open to:</strong> Students & Professionals</li>
             <li><strong>Prizes:</strong> 0$</li>
           </ul>
-        </section>
-        <section id="why">
-          <h2>Why Participate?</h2>
+        </Section>
+        <Section id="why" title="Why Participate?">
           <ul>
             <li>Test your cybersecurity skills in real-world challenges</li>
             <li>Network with industry experts and peers</li>
             <li>Win amazing prizes and recognition</li>
             <li>Workshops, talks, and hands-on activities</li>
           </ul>
-        </section>
-        <section id="register">
-          <h2>Register</h2>
+        </Section>
+        <Section id="register" title="Register">
+          <RegistrationStats backendUrl={process.env.REACT_APP_BACKEND_ADDRESS} />
           <form className="register-form" onSubmit={handleSubmit}>
-            <div className="form-group">
-              <label htmlFor="name">First Name</label>
-              <input type="text" id="name" name="name" required placeholder="Enter your first name" value={form.name} onChange={handleChange} />
-            </div>
-            <div className="form-group">
-              <label htmlFor="surname">Last Name</label>
-              <input type="text" id="surname" name="surname" required placeholder="Enter your last name" value={form.surname} onChange={handleChange} />
-            </div>
-            <div className="form-group">
-              <label htmlFor="email">Email</label>
-              <input type="email" id="email" name="email" required placeholder="Enter your email" value={form.email} onChange={handleChange} />
-            </div>
+            <FormField label="First Name" id="name" required value={form.name} onChange={handleChange} placeholder="Enter your first name" />
+            <FormField label="Last Name" id="surname" required value={form.surname} onChange={handleChange} placeholder="Enter your last name" />
+            <FormField label="Email" id="email" type="email" required value={form.email} onChange={handleChange} placeholder="Enter your email" />
             <div className="form-group" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
               <label htmlFor="phone" style={{ marginBottom: '0.3rem', whiteSpace: 'nowrap' }}>Phone Number</label>
               <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '0.5rem', width: '100%' }}>
@@ -113,12 +120,14 @@ function App() {
                   name="prefix" 
                   required 
                   placeholder="+40" 
-                  maxLength="4" 
+                  maxLength="5" 
                   style={{ width: '5rem' }} 
-                  pattern="\+[0-9]{1,3}" 
+                  pattern="\+[0-9]{1,4}" 
                   aria-label="Country Prefix"
                   value={form.prefix}
                   onChange={handleChange}
+                  inputMode="tel"
+                  autoComplete="tel-country-code"
                 />
                 <input 
                   type="tel" 
@@ -147,15 +156,9 @@ function App() {
                 />
               </div>
             </div>
-            <div className="form-group">
-              <label htmlFor="country">Country</label>
-              <input type="text" id="country" name="country" required placeholder="Enter your country" value={form.country} onChange={handleChange} />
-            </div>
-            <div className="form-group">
-              <label htmlFor="city">City</label>
-              <input type="text" id="city" name="city" required placeholder="Enter your city" value={form.city} onChange={handleChange} />
-            </div>
-            <button className="App-link App-link-green" type="submit" style={{marginTop: '1.5rem', width: '100%'}} disabled={loading}>{loading ? 'Submitting...' : 'Submit Registration'}</button>
+            <FormField label="Country" id="country" required value={form.country} onChange={handleChange} placeholder="Enter your country" />
+            <FormField label="City" id="city" required value={form.city} onChange={handleChange} placeholder="Enter your city" />
+            <button className="App-link App-link-green" type="submit" style={{marginTop: '1.5rem', width: '100%'}} disabled={loading}>{loading ? <LoadingSpinner text="Submitting..." /> : 'Submit Registration'}</button>
             {error && <div style={{marginTop: '0.5rem', color: '#e17055', fontWeight: 'bold', textAlign: 'center', fontSize: '1.1rem'}}>{error}</div>}
             {submitted && (
               <div style={{marginTop: '0.5rem', color: '#00b894', fontWeight: 'bold', textAlign: 'center', fontSize: '1.35rem'}}>
@@ -163,7 +166,7 @@ function App() {
               </div>
             )}
           </form>
-        </section>
+        </Section>
       </header>
     </div>
   );
