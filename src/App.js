@@ -28,6 +28,32 @@ function App() {
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState('');
   const [submitted, setSubmitted] = React.useState(false);
+  const [countryPrefixes, setCountryPrefixes] = React.useState([]);
+  const [prefixLoading, setPrefixLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    async function fetchCountries() {
+      setPrefixLoading(true);
+      try {
+        const res = await fetch('https://restcountries.com/v3.1/all?fields=name,idd');
+        const data = await res.json();
+        // Filter and map to { name, code } objects
+        const countries = data
+          .filter(c => c.idd && c.idd.root)
+          .map(c => ({
+            name: c.name.common,
+            code: c.idd.root + (c.idd.suffixes && c.idd.suffixes.length ? c.idd.suffixes[0] : '')
+          }))
+          .filter(c => /^\+[0-9]{1,4}$/.test(c.code))
+          .sort((a, b) => a.name.localeCompare(b.name));
+        setCountryPrefixes(countries);
+      } catch (e) {
+        setCountryPrefixes([]);
+      }
+      setPrefixLoading(false);
+    }
+    fetchCountries();
+  }, []);
 
   // --- Validation ---
   const validateForm = () => {
@@ -114,21 +140,70 @@ function App() {
             <div className="form-group" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
               <label htmlFor="phone" style={{ marginBottom: '0.3rem', whiteSpace: 'nowrap' }}>Phone Number</label>
               <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '0.5rem', width: '100%' }}>
-                <input 
-                  type="text" 
-                  id="prefix" 
-                  name="prefix" 
-                  required 
-                  placeholder="+40" 
-                  maxLength="5" 
-                  style={{ width: '5rem' }} 
-                  pattern="\+[0-9]{1,4}" 
-                  aria-label="Country Prefix"
+                <select
+                  id="prefix"
+                  name="prefix"
+                  required
+                  style={{
+                    width: '7.5rem',
+                    padding: '0.5rem 0.7rem',
+                    borderRadius: '8px',
+                    border: '2px solid #009900',
+                    background: '#181922',
+                    color: form.prefix ? '#fff' : '#b2bec3',
+                    fontSize: '1rem',
+                    fontFamily: 'Montserrat, Segoe UI, Arial, sans-serif',
+                    fontWeight: 500,
+                    outline: 'none',
+                    boxShadow: '0 2px 8px #00990022',
+                    transition: 'border 0.2s, box-shadow 0.2s',
+                    appearance: 'none',
+                    cursor: prefixLoading ? 'not-allowed' : 'pointer',
+                    display: form.prefix ? 'none' : 'block',
+                  }}
                   value={form.prefix}
-                  onChange={handleChange}
-                  inputMode="tel"
+                  onChange={e => setForm(f => ({ ...f, prefix: e.target.value }))}
+                  disabled={prefixLoading}
+                  aria-label="Country Prefix"
                   autoComplete="tel-country-code"
-                />
+                >
+                  <option value="" style={{ fontWeight: 400, fontSize: '0.93rem', color: '#b2bec3' }}>{prefixLoading ? 'Loading...' : 'Select country code'}</option>
+                  {countryPrefixes.map(c => (
+                    <option key={c.code} value={c.code}>{c.name} ({c.code})</option>
+                  ))}
+                </select>
+                {form.prefix && (
+                  <div
+                    style={{
+                      width: '7.5rem',
+                      minWidth: '7.5rem',
+                      maxWidth: '7.5rem',
+                      boxSizing: 'border-box',
+                      padding: '0.5rem 0.7rem',
+                      borderRadius: '8px',
+                      border: '2px solid #009900',
+                      background: '#181922',
+                      color: '#fff',
+                      fontSize: '1rem',
+                      fontFamily: 'Montserrat, Segoe UI, Arial, sans-serif',
+                      fontWeight: 500,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'flex-start',
+                      minHeight: '2.5rem',
+                      letterSpacing: '1px',
+                      userSelect: 'text',
+                      boxShadow: '0 2px 8px #00990022',
+                      overflow: 'hidden',
+                      whiteSpace: 'nowrap',
+                    }}
+                    onClick={() => setForm(f => ({ ...f, prefix: '' }))}
+                    title="Click to change country code"
+                  >
+                    {form.prefix}
+                    <span style={{marginLeft: '0.5rem', color: '#b2bec3', fontSize: '1.1em', cursor: 'pointer'}} title="Change country code">✎</span>
+                  </div>
+                )}
                 <input 
                   type="tel" 
                   id="phone" 
