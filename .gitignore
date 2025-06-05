@@ -19,8 +19,8 @@
 .env.test.local
 .env.production.local
 
-# registrations
-registrations*
+# csv files
+*.csv
 
 npm-debug.log*
 yarn-debug.log*
