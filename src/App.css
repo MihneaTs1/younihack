@@ -214,6 +214,23 @@ ul {
   width: 100%;
 }
 
+.RegistrationStats {
+  margin-bottom: 1.5rem;
+  color: #009900;
+  font-weight: 700;
+  font-size: 1.15rem;
+  text-align: center;
+  font-family: 'Orbitron', 'Montserrat', sans-serif;
+  background: rgba(16, 17, 20, 0.97);
+  border-radius: 10px;
+  box-shadow: 0 2px 12px #00990022;
+  padding: 1rem 0.5rem;
+  letter-spacing: 0.5px;
+  text-shadow: 0 2px 12px #00990044;
+  display: inline-block;
+  min-width: 270px;
+}
+
 @media (max-width: 700px) {
   .App-header {
     padding-top: 5rem;
