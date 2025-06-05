@@ -1,16 +1,33 @@
 # YouniHack 2025 Registration App
 
-This project is a full-stack registration system for the YouniHack 2025 event. It features a React frontend and a Node.js/Express backend that stores registrations in CSV files and handles email confirmation.
+[![Node.js](https://img.shields.io/badge/Node.js-Express-green)](https://nodejs.org/)
+[![React](https://img.shields.io/badge/Frontend-React-blue)](https://react.dev/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-## Features
+A modern full-stack registration system for the YouniHack 2025 event. Features a React frontend and a Node.js/Express backend with CSV storage and email confirmation.
 
-- Modern React frontend for event info and registration
-- Node.js/Express backend with CSV storage
-- Email confirmation for registrations (with Gmail SMTP)
-- Environment variable support for easy deployment
-- Duplicate email prevention and confirmation tracking
+---
 
-## Setup
+## 🚀 Features
+
+- ✨ Modern React frontend for event info and registration
+- 🗃️ Node.js/Express backend with CSV storage (no database needed)
+- 📧 Email confirmation for registrations (Gmail SMTP)
+- 🔒 Duplicate email prevention and confirmation tracking
+- 🌱 Easy deployment with environment variables
+- 📊 Live registration stats
+
+---
+
+## 🛠️ Prerequisites
+
+- Node.js (v16+ recommended)
+- npm (v8+ recommended)
+- Gmail account for sending confirmation emails (App Password required)
+
+---
+
+## ⚡ Quick Start
 
 ### 1. Clone the repository
 
@@ -27,7 +44,7 @@ npm install
 
 ### 3. Configure environment variables
 
-Create a `.env` file in the project root with:
+Create a `.env` file in the project root:
 
 ```env
 MAIL_USER=your.email@gmail.com
@@ -36,7 +53,7 @@ BACKEND_ADDRESS=http://localhost:5000
 FRONTEND_ADDRESS=http://localhost:3000
 ```
 
-For the React frontend, create a `.env.local` file in the project root with:
+For the React frontend, create a `.env.local` file in the project root:
 
 ```env
 REACT_APP_BACKEND_ADDRESS=http://localhost:5000
@@ -56,20 +73,34 @@ npm start
 
 Open [http://localhost:3000](http://localhost:3000) to view the app.
 
-## How it works
+---
 
-- Users register via the form. Data is sent to the backend and saved in `registrations.csv`.
-- A confirmation email is sent. The user must click the link to confirm.
-- Confirmed registrations are added to `registrations-confirmed.csv`.
-- Duplicate emails are blocked (checked in both CSVs).
+## 📝 How it works
 
-## Troubleshooting
+1. Users register via the form. Data is sent to the backend and saved in `registrations.csv`.
+2. A confirmation email is sent. The user must click the link to confirm.
+3. Confirmed registrations are added to `registrations-confirmed.csv`.
+4. Duplicate emails are blocked (checked in both CSVs).
 
-- If emails are not sent, ensure you use a Gmail app password and allow less secure apps if needed.
-- Restart both backend and frontend after changing environment files.
-- For production, set the addresses in `.env` and `.env.local` to your deployed URLs.
+---
 
-## Scripts
+## 🔌 API Endpoints
+
+- `POST /register` — Register a new user
+- `GET /stats` — Get registration statistics
+- `GET /confirm/:token` — Confirm registration via email link
+
+---
+
+## 🐞 Troubleshooting
+
+- **Emails not sent?** Ensure you use a Gmail app password and allow less secure apps if needed.
+- **Environment changes?** Restart both backend and frontend after editing `.env` files.
+- **Production:** Set addresses in `.env` and `.env.local` to your deployed URLs.
+
+---
+
+## 📜 Scripts
 
 - `npm start` — Start the React frontend
 - `node server.js` — Start the backend server
@@ -77,4 +108,22 @@ Open [http://localhost:3000](http://localhost:3000) to view the app.
 
 ---
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 🤝 Contributing
+
+Pull requests are welcome! For major changes, please open an issue first to discuss what you would like to change.
+
+1. Fork the repo
+2. Create your feature branch (`git checkout -b feature/YourFeature`)
+3. Commit your changes (`git commit -am 'Add some feature'`)
+4. Push to the branch (`git push origin feature/YourFeature`)
+5. Open a pull request
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License.
+
+---
+
+> This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
