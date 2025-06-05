@@ -1,0 +1,134 @@
+/* Copied from src/App.css for backend confirmation page styling. */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Montserrat:wght@400;700&display=swap');
+
+body {
+  margin: 0;
+  font-family: 'Montserrat', 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+  background: #101114;
+}
+
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Add non-empty rules here if needed */
+}
+
+.TopBar {
+  width: 100%;
+  background: #11131a;
+  color: #fff;
+  padding: 1rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+}
+.TopBar-logo {
+  font-family: 'Orbitron', 'Montserrat', sans-serif;
+  font-size: 2rem;
+  font-weight: 800;
+  margin-left: 2rem;
+  letter-spacing: 2px;
+  color: #009900;
+  text-shadow: 0 2px 12px #00990044;
+}
+.TopBar-nav {
+  margin-right: 2rem;
+  display: flex;
+  gap: 1.5rem;
+}
+.TopBar-nav a {
+  color: #fff;
+  text-decoration: none;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  padding: 0.5rem 1.2rem;
+  border-radius: 6px;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+.TopBar-nav a::after {
+  content: '';
+  display: block;
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 0;
+  height: 3px;
+  background: #009900;
+  transition: width 0.3s, left 0.3s;
+}
+.TopBar-nav a:hover {
+  background: #23243a;
+  color: #009900;
+  box-shadow: 0 2px 8px #00990033;
+}
+.TopBar-nav a:hover::after {
+  width: 100%;
+  left: 0;
+}
+
+.App-header {
+  background: linear-gradient(135deg, #181922 60%, #006600 100%);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  font-size: calc(10px + 2vmin);
+  color: white;
+  padding-top: 7rem;
+  font-family: 'Montserrat', 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+}
+
+h1 {
+  font-family: 'Orbitron', 'Montserrat', sans-serif;
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  letter-spacing: 1px;
+  text-shadow: 0 4px 24px #00990033;
+}
+
+section {
+  background: rgba(16, 17, 20, 0.92);
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+  padding: 2rem 2.5rem;
+  margin: 2rem 0;
+  max-width: 600px;
+}
+section#register {
+  width: 100%;
+  max-width: 900px;
+  min-width: 350px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+section h2 {
+  color: #009900;
+  margin-bottom: 1rem;
+  font-family: 'Orbitron', 'Montserrat', sans-serif;
+}
+
+ul {
+  list-style: disc inside;
+  padding-left: 0;
+}
+
+@media (max-width: 700px) { /* ...existing code... */ }
+
+@keyframes App-logo-spin { /* ...existing code... */ }

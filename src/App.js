@@ -31,6 +31,8 @@ function App() {
   const [countryPrefixes, setCountryPrefixes] = React.useState([]);
   const [prefixLoading, setPrefixLoading] = React.useState(true);
 
+  const backendAddress = process.env.REACT_APP_BACKEND_ADDRESS || `http://${window.location.hostname}:5000`;
+
   React.useEffect(() => {
     async function fetchCountries() {
       setPrefixLoading(true);
@@ -87,7 +89,7 @@ function App() {
     if (!validateForm()) return;
     setLoading(true);
     try {
-      const res = await fetch((process.env.REACT_APP_BACKEND_ADDRESS || 'http://localhost:5000') + '/register', {
+      const res = await fetch(backendAddress + '/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form)
@@ -132,7 +134,7 @@ function App() {
           </ul>
         </Section>
         <Section id="register" title="Register">
-          <RegistrationStats backendUrl={process.env.REACT_APP_BACKEND_ADDRESS} />
+          <RegistrationStats backendUrl={backendAddress} />
           <form className="register-form" onSubmit={handleSubmit}>
             <FormField label="First Name" id="name" required value={form.name} onChange={handleChange} placeholder="Enter your first name" />
             <FormField label="Last Name" id="surname" required value={form.surname} onChange={handleChange} placeholder="Enter your last name" />
