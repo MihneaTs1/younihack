@@ -1,0 +1,1797 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Fira+Code:wght@300;400;500;700&family=Source+Code+Pro:wght@300;400;500;700&display=swap');
+
+/* Global Box-sizing */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Terminal Cursor Animation */
+@keyframes blink-cursor {
+
+  0%,
+  50% {
+    opacity: 1;
+  }
+
+  51%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.terminal-cursor {
+  display: inline-block;
+  width: 10px;
+  height: 20px;
+  background: #00ff41;
+  animation: blink-cursor 1s infinite;
+  margin-left: 2px;
+}
+
+/* Base Styles */
+body {
+  margin: 0;
+  font-family: 'Fira Code', 'Source Code Pro', 'Courier New', monospace;
+  background: #000000;
+  color: #00ff41;
+  overflow-x: hidden;
+}
+
+/* Terminal Loading Animation Classes */
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(50px) scale(0.95);
+  transition: all 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.animate-on-scroll.animate-in {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.fade-in-up {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.8s ease-out;
+}
+
+.fade-in-up.animate-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.slide-in-left {
+  opacity: 0;
+  transform: translateX(-60px);
+  transition: all 1s ease-out;
+}
+
+.slide-in-left.animate-in {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.slide-in-right {
+  opacity: 0;
+  transform: translateX(60px);
+  transition: all 1s ease-out;
+}
+
+.slide-in-right.animate-in {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.scale-in {
+  opacity: 0;
+  transform: scale(0.8);
+  transition: all 0.8s ease-out;
+}
+
+.scale-in.animate-in {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Terminal Text Loading Effect */
+.terminal-text {
+  overflow: hidden;
+  white-space: nowrap;
+  width: 0;
+  animation: typewriter-load 2s steps(50, end) forwards;
+  border-right: 2px solid #00ff41;
+}
+
+@keyframes typewriter-load {
+  from {
+    width: 0;
+  }
+
+  to {
+    width: 100%;
+  }
+}
+
+.terminal-text.typing-complete {
+  border-right: none;
+}
+
+.terminal-prefix {
+  color: #00ff41;
+  font-weight: bold;
+}
+
+.terminal-prefix::before {
+  content: "root@younihack:~$ ";
+  color: #ff0040;
+}
+
+.matrix-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+  background: linear-gradient(0deg, #000000 0%, #001100 100%);
+}
+
+.matrix-bg::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image:
+    repeating-linear-gradient(0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 255, 65, 0.03) 2px,
+      rgba(0, 255, 65, 0.03) 4px);
+  animation: scan-lines 0.1s linear infinite;
+}
+
+@keyframes scan-lines {
+  0% {
+    transform: translateY(0);
+  }
+
+  100% {
+    transform: translateY(4px);
+  }
+}
+
+.animate-on-scroll.delay-1 {
+  transition-delay: 0.1s;
+}
+
+.animate-on-scroll.delay-2 {
+  transition-delay: 0.2s;
+}
+
+.animate-on-scroll.delay-3 {
+  transition-delay: 0.3s;
+}
+
+.animate-on-scroll.delay-4 {
+  transition-delay: 0.4s;
+}
+
+.animate-on-scroll.delay-5 {
+  transition-delay: 0.5s;
+}
+
+.animate-on-scroll.delay-6 {
+  transition-delay: 0.6s;
+}
+
+.fade-in {
+  animation: fadeIn 1.2s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.slide-in-left {
+  animation: slideInLeft 0.8s ease-out forwards;
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.slide-in-right {
+  animation: slideInRight 0.8s ease-out forwards;
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.App {
+  text-align: center;
+}
+
+/* Logo Animation */
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+/* Terminal Top Bar */
+.TopBar {
+  width: 100%;
+  background: #000000;
+  color: #00ff41;
+  padding: 1rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 8px rgba(0, 255, 65, 0.3);
+  border-bottom: 1px solid #00ff41;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  transform: translateY(-100%);
+  animation: slideDownTopBar 1s ease-out 0.5s forwards;
+  font-family: 'Fira Code', monospace;
+}
+
+@keyframes slideDownTopBar {
+  to {
+    transform: translateY(0);
+  }
+}
+
+.TopBar-logo {
+  font-family: 'Fira Code', monospace;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-left: 2rem;
+  letter-spacing: 2px;
+  color: #00ff41;
+  text-shadow: 0 0 10px #00ff41;
+  opacity: 0;
+  animation: fadeInLogo 1s ease-out 1s forwards;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.TopBar-logo:hover {
+  color: #00cc44;
+  text-shadow: 0 0 15px #00ff41;
+  transform: scale(1.05);
+}
+
+.TopBar-logo::before {
+  content: "[";
+  color: #ff0040;
+}
+
+.TopBar-logo::after {
+  content: "]";
+  color: #ff0040;
+}
+
+@keyframes fadeInLogo {
+  to {
+    opacity: 1;
+  }
+}
+
+/* Hamburger Button */
+.TopBar-hamburger {
+  display: none;
+  /* hidden by default, shown on mobile */
+  background: none;
+  border: none;
+  padding: 0.5rem;
+  cursor: pointer;
+  margin-right: 1.5rem;
+  z-index: 200;
+}
+
+.TopBar-hamburger svg {
+  width: 2rem;
+  height: 2rem;
+  color: #fff;
+}
+
+.TopBar-hamburger svg rect {
+  fill: #fff;
+}
+
+/* Terminal Navigation Links */
+.TopBar-nav {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 100vw;
+  background: #000000;
+  border-left: 1px solid #00ff41;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-top: 5rem;
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+  z-index: 150;
+}
+
+.TopBar-nav a {
+  width: 100%;
+  padding: 1.2rem 1.5rem;
+  color: #00ff41;
+  text-decoration: none;
+  font-family: 'Fira Code', monospace;
+  font-weight: 500;
+  font-size: 1.25rem;
+  border-bottom: 1px solid rgba(0, 255, 65, 0.2);
+  transition: all 0.3s ease;
+}
+
+.TopBar-nav a::before {
+  content: "> ";
+  color: #ff0040;
+}
+
+.TopBar-nav a:hover {
+  background: rgba(0, 255, 65, 0.1);
+  text-shadow: 0 0 10px #00ff41;
+  padding-left: 2rem;
+}
+
+.TopBar-nav a.active {
+  background: rgba(0, 255, 104, 0.2);
+  color: #00ff68;
+  text-shadow: 0 0 10px #00ff41;
+  border-left: 3px solid #00ff68;
+  border-radius: 8px;
+  padding-left: 2rem;
+}
+
+.TopBar-nav.active {
+  transform: translateX(0);
+}
+
+/* Terminal Header Section */
+.App-header {
+  background: #000000;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  font-size: calc(10px + 2vmin);
+  padding-top: 7rem;
+  position: relative;
+}
+
+.App-header>h1 {
+  font-family: 'Orbitron', 'Montserrat', sans-serif;
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  letter-spacing: 1px;
+  text-shadow: 0 4px 24px #00ff6833;
+  opacity: 0;
+  transform: translateY(30px) scale(0.9);
+  animation: heroTitleAnimation 1.2s ease-out 1.5s forwards;
+}
+
+@keyframes heroTitleAnimation {
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.App-header>p {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: heroDescAnimation 1s ease-out 2s forwards;
+}
+
+@keyframes heroDescAnimation {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Terminal Typewriter Animation */
+.typewriter {
+  font-size: 1.2rem;
+  line-height: 1.8;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: #000000;
+  border: 1px solid #00ff41;
+  font-family: 'Fira Code', monospace;
+  opacity: 0;
+  animation: fadeInTypewriter 1s ease-out 2.5s forwards;
+}
+
+@keyframes fadeInTypewriter {
+  to {
+    opacity: 1;
+  }
+}
+
+.typewriter::before {
+  content: "root@younihack:~$ cat welcome.txt";
+  color: #ff0040;
+  display: block;
+  margin-bottom: 1rem;
+  font-weight: bold;
+}
+
+.typewriter-text {
+  display: block;
+  white-space: pre-line;
+  overflow: visible;
+  color: #00ff41;
+  font-weight: 400;
+  line-height: 1.8;
+}
+
+/* Stop blinking after typing is complete */
+.typewriter-text.typing-complete {
+  border-right: none;
+}
+
+h1 {
+  font-family: 'Fira Code', monospace;
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  letter-spacing: 2px;
+  text-shadow: 0 0 20px #00ff41;
+  color: #00ff41;
+  text-transform: uppercase;
+}
+
+h1::before {
+  content: "// ";
+  color: #666;
+}
+
+h1::after {
+  content: " //";
+  color: #666;
+}
+
+/* Terminal Sections */
+section {
+  background: #000000;
+  border: 1px solid #00ff41;
+  padding: 2rem 2.5rem;
+  margin: 2rem 0;
+  max-width: 800px;
+  opacity: 0;
+  transform: translateY(50px);
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  font-family: 'Fira Code', monospace;
+  position: relative;
+}
+
+section::before {
+  content: "[SYSTEM] Loading module...";
+  position: absolute;
+  top: -30px;
+  left: 0;
+  color: #666;
+  font-size: 0.8rem;
+  font-family: 'Fira Code', monospace;
+}
+
+section.fade-in-scroll {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Enhanced fade-in animations */
+.fade-in-up {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.6s ease-out;
+}
+
+.fade-in-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.stagger-animation {
+  transition-delay: var(--stagger-delay, 0s);
+}
+
+section#register {
+  width: 100%;
+  max-width: 900px;
+  margin: 2rem auto;
+}
+
+section h2 {
+  color: #00ff41;
+  margin-bottom: 1.5rem;
+  font-family: 'Fira Code', monospace;
+  font-size: 1.8rem;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  opacity: 1;
+  transform: translateY(0);
+  transition: all 0.6s ease-out 0.2s;
+  text-align: center;
+  display: block;
+}
+
+section h2::before {
+  content: "$ ./run ";
+  color: #ff0040;
+  font-weight: bold;
+}
+
+section h2::after {
+  content: ".sh";
+  color: #666;
+}
+
+section.animate-in h2 {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Links & Buttons */
+.App-link {
+  background: linear-gradient(90deg, #00ff68 60%, #23243a 100%);
+  color: #fff;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin-top: 2rem;
+  display: inline-block;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.10);
+  transition: background 0.2s, transform 0.2s;
+}
+
+.App-link:hover {
+  background: linear-gradient(90deg, #00cc55 60%, #23243a 100%);
+  transform: translateY(-2px) scale(1.03);
+}
+
+/* Terminal Forms */
+.register-form {
+  background: #000000;
+  border: 1px solid #00ff41;
+  padding: 2rem;
+  width: 700px;
+  margin: 1rem auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  font-family: 'Fira Code', monospace;
+  position: relative;
+}
+
+.register-form::before {
+  content: "[SECURE] User registration module initialized";
+  position: absolute;
+  top: -25px;
+  left: 0;
+  color: #666;
+  font-size: 0.8rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: #00ff41;
+  font-family: 'Fira Code', monospace;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+}
+
+.form-group label::before {
+  content: "INPUT> ";
+  color: #ff0040;
+}
+
+.form-group input,
+.register-form select {
+  padding: 0.75rem 1rem;
+  border: 1px solid #00ff41;
+  background: #000000;
+  color: #00ff41;
+  font-size: 1rem;
+  outline: none;
+  width: 100%;
+  font-family: 'Fira Code', monospace;
+}
+
+.form-group input:focus,
+.register-form select:focus {
+  border-color: #00ff41;
+  box-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+  background: rgba(0, 255, 65, 0.05);
+}
+
+.phone-input-group {
+  display: flex;
+  gap: 0.5rem;
+  align-items: stretch;
+  width: 100%;
+}
+
+.phone-input-group select {
+  flex: 0 0 200px;
+  min-width: 180px;
+  width: auto;
+}
+
+.phone-input-group input {
+  flex: 1;
+  min-width: 0;
+}
+
+.register-form button[type="submit"] {
+  padding: 1rem;
+  font-size: 1.1rem;
+  background: #000000;
+  color: #00ff41;
+  border: 2px solid #00ff41;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-family: 'Fira Code', monospace;
+  text-transform: uppercase;
+  font-weight: bold;
+  position: relative;
+  overflow: hidden;
+}
+
+.register-form button[type="submit"]::before {
+  content: "[EXECUTE] ";
+  color: #ff0040;
+}
+
+.register-form button[type="submit"]:hover {
+  background: rgba(0, 255, 65, 0.1);
+  box-shadow: 0 0 20px rgba(0, 255, 65, 0.5);
+  text-shadow: 0 0 10px #00ff41;
+}
+
+.register-form button[type="submit"]:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Event Details Styling */
+.event-details-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.event-info-card {
+  background: linear-gradient(135deg, rgba(0, 255, 104, 0.1), rgba(16, 17, 20, 0.8));
+  border: 1px solid rgba(0, 255, 104, 0.3);
+  border-radius: 12px;
+  padding: 1.5rem;
+  text-align: center;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(30px) scale(0.95);
+  animation: cardSlideIn 0.8s ease-out forwards;
+}
+
+@keyframes cardSlideIn {
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.event-info-card:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.event-info-card:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.event-info-card:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.event-info-card:nth-child(4) {
+  animation-delay: 0.4s;
+}
+
+.event-info-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0, 255, 104, 0.1), transparent);
+  transition: left 0.5s ease;
+}
+
+.event-info-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(0, 255, 104, 0.6);
+  box-shadow: 0 8px 25px rgba(0, 255, 104, 0.2);
+}
+
+.event-info-card:hover::before {
+  left: 100%;
+}
+
+.event-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.event-info-card h4 {
+  color: #00ff68;
+  margin: 0.5rem 0;
+  font-family: 'Orbitron', 'Montserrat', sans-serif;
+  font-size: 1.1rem;
+}
+
+.event-info-card p {
+  color: #fff;
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.schedule-section {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(0, 255, 104, 0.3);
+}
+
+.schedule-section h3 {
+  color: #00ff68;
+  text-align: center;
+  margin-bottom: 2rem;
+  font-family: 'Orbitron', 'Montserrat', sans-serif;
+  font-size: 1.5rem;
+}
+
+.schedule-timeline {
+  position: relative;
+  padding-left: 2rem;
+}
+
+.schedule-timeline::before {
+  content: '';
+  position: absolute;
+  left: 15px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, #00ff68, rgba(0, 255, 104, 0.3));
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 2rem;
+  padding-left: 2rem;
+  opacity: 0;
+  transform: translateX(-30px);
+  transition: all 0.6s ease-out;
+}
+
+.timeline-item.fade-in-up {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s ease-out;
+}
+
+.timeline-item.fade-in-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.timeline-item.stagger-animation {
+  transition-delay: var(--stagger-delay, 0s);
+}
+
+.timeline-item.animate-in {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.timeline-item.animate-in {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.timeline-item:nth-child(1) {
+  transition-delay: 0.1s;
+}
+
+.timeline-item:nth-child(2) {
+  transition-delay: 0.2s;
+}
+
+.timeline-item:nth-child(3) {
+  transition-delay: 0.3s;
+}
+
+.timeline-item:nth-child(4) {
+  transition-delay: 0.4s;
+}
+
+.timeline-marker {
+  position: absolute;
+  left: -2rem;
+  top: 0.5rem;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid #00ff68;
+  background: #101114;
+}
+
+.timeline-marker.frontend {
+  background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+}
+
+.timeline-marker.backend {
+  background: linear-gradient(45deg, #4ecdc4, #45b7d1);
+}
+
+.timeline-marker.workshop {
+  background: linear-gradient(45deg, #96ceb4, #feca57);
+}
+
+.timeline-marker.ctf {
+  background: linear-gradient(45deg, #ff9ff3, #54a0ff);
+}
+
+.timeline-content h4 {
+  color: #00ff68;
+  margin: 0 0 0.5rem 0;
+  font-family: 'Orbitron', 'Montserrat', sans-serif;
+  font-size: 1.1rem;
+}
+
+.timeline-day {
+  display: inline-block;
+  background: rgba(0, 255, 104, 0.2);
+  color: #00ff68;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.timeline-content p {
+  color: #ccc;
+  margin: 0.5rem 0 0 0;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+/* Calendar link styling */
+.calendar-link {
+  color: inherit;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border-bottom: 1px solid transparent;
+}
+
+.calendar-link:hover {
+  color: #00ff68;
+  border-bottom-color: #00ff68;
+  text-shadow: 0 2px 8px rgba(0, 255, 104, 0.3);
+}
+
+/* Benefits Section Styling */
+.benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  margin: 2rem 0;
+}
+
+.benefit-card {
+  background: linear-gradient(135deg, rgba(0, 255, 104, 0.05), rgba(16, 17, 20, 0.9));
+  border: 1px solid rgba(0, 255, 104, 0.2);
+  border-radius: 16px;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  transition: all 0.4s ease;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  opacity: 0;
+  transform: translateY(40px) scale(0.9);
+  animation: benefitCardSlideIn 0.8s ease-out forwards;
+}
+
+@keyframes benefitCardSlideIn {
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.benefit-card:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.benefit-card:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.benefit-card:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.benefit-card:nth-child(4) {
+  animation-delay: 0.4s;
+}
+
+.benefit-card:nth-child(5) {
+  animation-delay: 0.5s;
+}
+
+.benefit-card:nth-child(6) {
+  animation-delay: 0.6s;
+}
+
+.benefit-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0, 255, 104, 0.1), transparent);
+  transition: left 0.6s ease;
+}
+
+.benefit-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  border-color: rgba(0, 255, 104, 0.5);
+  box-shadow: 0 12px 30px rgba(0, 255, 104, 0.2);
+  background: linear-gradient(135deg, rgba(0, 255, 104, 0.1), rgba(16, 17, 20, 0.95));
+}
+
+.benefit-card:hover::before {
+  left: 100%;
+}
+
+.benefit-icon {
+  font-size: 3rem;
+  margin-bottom: 1.5rem;
+  display: block;
+  filter: drop-shadow(0 4px 8px rgba(0, 255, 104, 0.3));
+  transition: transform 0.3s ease;
+}
+
+.benefit-card:hover .benefit-icon {
+  transform: scale(1.1) rotate(5deg);
+}
+
+.benefit-card h4 {
+  color: #00ff68;
+  margin: 1rem 0;
+  font-family: 'Orbitron', 'Montserrat', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  text-shadow: 0 2px 8px rgba(0, 255, 104, 0.3);
+  transition: color 0.3s ease;
+}
+
+.benefit-card:hover h4 {
+  color: #00cc55;
+  text-shadow: 0 4px 12px rgba(0, 255, 104, 0.5);
+}
+
+.benefit-card p {
+  color: #ccc;
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.6;
+  transition: color 0.3s ease;
+}
+
+.benefit-card:hover p {
+  color: #fff;
+}
+
+/* Registration Intro */
+.registration-intro {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, rgba(0, 255, 104, 0.1), rgba(16, 17, 20, 0.8));
+  border: 1px solid rgba(0, 255, 104, 0.3);
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+}
+
+.registration-intro h3 {
+  color: #00ff68;
+  font-family: 'Orbitron', 'Montserrat', sans-serif;
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+  text-shadow: 0 2px 8px rgba(0, 255, 104, 0.3);
+}
+
+.registration-intro p {
+  color: #ccc;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin: 0;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Registration Stats */
+.RegistrationStats {
+  margin: 0 auto 1rem auto;
+  color: #00ff68;
+  font-weight: 700;
+  font-size: 1.2rem;
+  text-align: center;
+  padding: 1rem;
+  background: rgba(16, 17, 20, 0.97);
+  border-radius: 10px;
+  box-shadow: 0 2px 12px #00ff6822;
+  width: fit-content;
+  min-width: 300px;
+}
+
+/* Contact Footer Styles */
+.contact-footer {
+  background: linear-gradient(135deg, #0a0b0f 0%, #1a1d26 50%, #11131a 100%);
+  color: #fff;
+  padding: 3rem 2rem 1rem;
+  border-top: 3px solid #00ff68;
+  box-shadow: 0 -4px 20px rgba(0, 255, 104, 0.1);
+  position: relative;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(50px);
+  transition: all 1s ease-out;
+}
+
+.contact-footer.animate-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.contact-footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #00ff68, transparent);
+  animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2.5rem;
+  text-align: left;
+}
+
+.footer-section {
+  padding: 1.5rem;
+  background: rgba(16, 17, 20, 0.6);
+  border-radius: 12px;
+  border: 1px solid rgba(0, 255, 104, 0.2);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.footer-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 12px;
+  background: linear-gradient(45deg, transparent, rgba(0, 255, 104, 0.05), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.footer-section:hover {
+  transform: translateY(-5px);
+  border-color: rgba(0, 255, 104, 0.4);
+  box-shadow: 0 8px 25px rgba(0, 255, 104, 0.15);
+}
+
+.footer-section:hover::before {
+  opacity: 1;
+}
+
+.footer-section h3 {
+  color: #00ff68;
+  font-family: 'Orbitron', 'Montserrat', sans-serif;
+  font-size: 1.3rem;
+  margin-bottom: 1.2rem;
+  font-weight: 700;
+  text-shadow: 0 2px 8px rgba(0, 255, 104, 0.3);
+  position: relative;
+}
+
+.footer-section h3::after {
+  content: '';
+  display: block;
+  width: 50px;
+  height: 2px;
+  background: linear-gradient(90deg, #00ff68, transparent);
+  margin-top: 0.5rem;
+}
+
+.contact-info,
+.social-links,
+.quick-links {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.contact-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.contact-label {
+  font-size: 0.9rem;
+  color: #888;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.contact-info a,
+.social-links a,
+.quick-links a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  padding: 0.5rem;
+  border-radius: 6px;
+  position: relative;
+  overflow: hidden;
+}
+
+.contact-info a::before,
+.social-links a::before,
+.quick-links a::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0, 255, 104, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.contact-info a:hover,
+.social-links a:hover,
+.quick-links a:hover {
+  color: #00ff68;
+  background: rgba(0, 255, 104, 0.1);
+  transform: translateX(5px);
+  text-shadow: 0 0 8px rgba(0, 255, 104, 0.5);
+}
+
+.contact-info a:hover::before,
+.social-links a:hover::before,
+.quick-links a:hover::before {
+  left: 100%;
+}
+
+.social-links a {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-size: 1rem;
+}
+
+.social-icon {
+  font-size: 1.2rem;
+  transition: transform 0.3s ease;
+}
+
+.social-links a:hover .social-icon {
+  transform: scale(1.2) rotate(5deg);
+}
+
+.footer-bottom {
+  margin-top: 2.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(0, 255, 104, 0.2);
+  text-align: center;
+  background: rgba(10, 11, 15, 0.8);
+  border-radius: 8px;
+  backdrop-filter: blur(5px);
+}
+
+.footer-bottom p {
+  margin: 0;
+  color: #00ff68;
+  font-size: 0.95rem;
+  font-weight: 500;
+  font-family: 'Fira Code', monospace;
+  text-shadow: 0 0 8px rgba(0, 255, 104, 0.3);
+  letter-spacing: 0.5px;
+}
+
+/* Responsive - Mobile Optimizations */
+@media (max-width: 768px) {
+
+  /* Adjust top bar */
+  .TopBar {
+    padding: 0.75rem 1rem;
+  }
+
+  .TopBar-logo {
+    font-size: 1.75rem;
+    margin-left: 1rem;
+  }
+
+  .TopBar-hamburger {
+    display: block;
+  }
+
+  /* Sections */
+  section {
+    margin: 1.5rem 1rem;
+    padding: 1.5rem;
+    border-radius: 12px;
+  }
+
+  section#register {
+    max-width: 100%;
+    padding: 1.5rem;
+  }
+
+  section h2 {
+    font-size: 1.5rem;
+  }
+
+  /* Header */
+  .App-header {
+    padding-top: 5.5rem;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+  }
+
+  .App-logo {
+    height: 30vmin;
+  }
+
+  /* Typewriter mobile */
+  .typewriter {
+    font-size: 1.1rem;
+    padding: 1rem 1.5rem;
+    margin: 0 1rem;
+    max-width: calc(100% - 2rem);
+  }
+
+  .typewriter-text {
+    white-space: pre-line;
+    height: 0;
+    border-right: 3px solid #00ff41;
+    animation: typing-mobile 6s steps(150, end) 3s forwards, blink 1s infinite 3s;
+  }
+
+  @keyframes typing-mobile {
+    from {
+      height: 0;
+    }
+
+    to {
+      height: 6em;
+    }
+  }
+
+  /* Form improvements */
+  .register-form {
+    width: 90%;
+    padding: 1.5rem;
+  }
+
+  .form-group {
+    gap: 0.8rem;
+  }
+
+  .form-group label {
+    font-size: 0.95rem;
+  }
+
+  .form-group input,
+  .register-form select {
+    font-size: 1rem;
+    padding: 0.8rem 1rem;
+  }
+
+  .register-form button[type="submit"] {
+    width: 100%;
+    font-size: 1.15rem;
+    padding: 1.1rem;
+  }
+
+  /* Buttons & links full-width */
+  .App-link {
+    display: block;
+    width: 90%;
+    margin: 1.5rem auto;
+    text-align: center;
+  }
+
+  /* Footer stacking */
+  .footer-content {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .footer-section {
+    padding: 1rem;
+    text-align: center;
+  }
+
+  .footer-section h3 {
+    font-size: 1.2rem;
+  }
+
+  .footer-section .contact-info,
+  .footer-section .social-links,
+  .footer-section .quick-links {
+    align-items: center;
+    gap: 0.8rem;
+  }
+
+  /* Footer bottom */
+  .footer-bottom p {
+    font-size: 0.9rem;
+  }
+
+  .phone-input-group {
+    flex-direction: row;
+    gap: 0.5rem;
+  }
+
+  .phone-input-group select {
+    flex: 0 0 120px;
+    min-width: 120px;
+  }
+
+  .phone-input-group input {
+    flex: 1;
+    min-width: 0;
+  }
+
+  /* Event details mobile */
+  .event-details-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .event-info-card {
+    padding: 1rem;
+  }
+
+  .event-icon {
+    font-size: 2rem;
+  }
+
+  .schedule-timeline {
+    padding-left: 1.5rem;
+  }
+
+  .timeline-item {
+    padding-left: 1.5rem;
+  }
+
+  .timeline-marker {
+    left: -1.5rem;
+  }
+
+  /* Benefits grid mobile */
+  .benefits-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .benefit-card {
+    padding: 1.5rem 1rem;
+  }
+
+  .benefit-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .benefit-card h4 {
+    font-size: 1.2rem;
+  }
+
+  .benefit-card p {
+    font-size: 0.95rem;
+  }
+}
+
+@media (min-width: 769px) {
+  .TopBar-nav {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    /* prevent wrapping */
+    justify-content: flex-end;
+    /* push links to the right */
+    gap: 1rem;
+    /* spacing between items */
+    margin-right: 2rem;
+    background: transparent;
+    position: static;
+    transform: none !important;
+    width: auto;
+    height: auto;
+    padding: 0;
+    align-items: center;
+  }
+
+  .TopBar-nav a {
+    white-space: nowrap;
+    /* keep each label on one line */
+    padding: 0.75rem 1rem;
+    font-size: 1.1rem;
+    color: #fff;
+    transition: background 0.2s, color 0.2s;
+  }
+
+  .TopBar-nav a:hover {
+    background: #23243a;
+    color: #00ff68;
+  }
+
+  .TopBar-nav a.active {
+    background: rgba(0, 255, 104, 0.2);
+    color: #00ff68;
+    text-shadow: 0 0 10px #00ff41;
+    border-left: 3px solid #00ff68;
+    border-radius: 8px;
+  }
+}
+
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+section {
+  text-align: left;
+}
+
+section ul {
+  list-style-position: outside;
+  padding-left: 1.5rem;
+  margin: 1rem 0;
+}
+
+section ul li {
+  margin-bottom: 0.5rem;
+}
+
+section>h1,
+section>h2 {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Enhanced scroll animations */
+.fade-in-up {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.fade-in-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.fade-in-left {
+  opacity: 0;
+  transform: translateX(-30px);
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.fade-in-left.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.fade-in-right {
+  opacity: 0;
+  transform: translateX(30px);
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.fade-in-right.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.fade-in-scale {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.fade-in-scale.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.stagger-animation {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.6s ease-out;
+  transition-delay: var(--stagger-delay, 0s);
+}
+
+.stagger-animation.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Section titles animation */
+section h2 {
+  color: #00ff68;
+  margin-bottom: 1rem;
+  font-family: 'Orbitron', 'Montserrat', sans-serif;
+  font-size: 1.8rem;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.6s ease-out 0.2s;
+  text-align: center;
+  display: block;
+}
+
+section h2.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Form elements animation */
+.form-group {
+  opacity: 0;
+  transform: translateY(15px);
+  transition: all 0.5s ease-out;
+  transition-delay: var(--stagger-delay, 0s);
+}
+
+.form-group.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Button animations */
+.App-link, .register-form button[type="submit"] {
+  opacity: 0;
+  transform: translateY(10px) scale(0.95);
+  transition: all 0.6s ease-out;
+}
+
+.App-link.visible, .register-form button[type="submit"].visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Stats animation */
+.RegistrationStats {
+  opacity: 0;
+  transform: scale(0.9) translateY(20px);
+  transition: all 0.7s ease-out;
+}
+
+.RegistrationStats.visible {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+/* Footer sections animation */
+.footer-section {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s ease-out;
+  transition-delay: var(--stagger-delay, 0s);
+}
+
+.footer-section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Text content animation */
+section p, section ul, section li {
+  opacity: 0;
+  transform: translateY(15px);
+  transition: all 0.6s ease-out;
+  transition-delay: var(--stagger-delay, 0.1s);
+}
+
+section p.visible, section ul.visible, section li.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Card-like elements */
+.event-info-card, .benefit-card, .timeline-item {
+  opacity: 0;
+  transform: translateY(25px) scale(0.95);
+  transition: all 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition-delay: var(--stagger-delay, 0s);
+}
+
+.event-info-card.visible, .benefit-card.visible, .timeline-item.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Typewriter container animation */
+.typewriter {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.8s ease-out;
+}
+
+.typewriter.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Adjusted typewriter animation for character-by-character typing */
+.typewriter-text {
+  display: block;
+  white-space: pre-line;
+  overflow: visible;
+  color: #00ff41;
+  font-weight: 400;
+  line-height: 1.8;
+}
+
+/* Adjusted typing animation for character-by-character typing */
+.typewriter-text {
+  display: block;
+  white-space: pre-line;
+  overflow: visible;
+  color: #00ff41;
+  font-weight: 400;
+  line-height: 1.8;
+}
+
+/* Adjusted typing animation for character-by-character typing */
+/*
+.typewriter-text {
+  display: block;
+  border-right: 3px solid #00ff41;
+  white-space: pre-line;
+  overflow: hidden;
+  color: #00ff41;
+  font-weight: 400;
+  line-height: 1.8;
+  animation: none;  Remove initial animation 
+}
+*/
+
+/* Keyframes for character-by-character typing effect */
+/*
+@keyframes typing {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 100%;
+  }
+}
+*/
+
+/* Cursor blinking animation */
+/*
+@keyframes blink {
+  0%, 50% {
+    border-color: #00ff68;
+  }
+  51%, 100% {
+    border-color: transparent;
+  }
+}
+*/
